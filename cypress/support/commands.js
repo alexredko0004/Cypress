@@ -10,7 +10,18 @@
 //
 //
 // -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
+Cypress.Commands.add('login', (email, password) => { 
+    cy.visit('/');
+        cy.on('uncaught:exception', (err, runnable) => {
+            return false
+          })
+        cy.contains('Sign In').click();
+        cy.get('button[role="button"]>i').click()
+        cy.get('form[method="POST"]').then(signIn=>{
+            cy.wrap(signIn).find('input[name="email"]').type(email);
+            cy.wrap(signIn).find('input[name="password"][required]').type(`${password}{enter}`)
+        });
+})
 //
 //
 // -- This is a child command --
